@@ -5,12 +5,12 @@ const htmlPlugin = new HtmlWebPackPlugin({
     filename: "./index.html"
 });
 
-const CSSModuleLoader={
-    loader:'css-loader',
-    options:{
-        modules:true,
-        sourceMap:true,
-        localIdentName:'[local]-[path]-[hash:base64:5]'
+const CSSModuleLoader = {
+    loader: 'css-loader',
+    options: {
+        modules: true,
+        sourceMap: true,
+        localIdentName: '[local]-[path]-[hash:base64:5]'
     }
 }
 
@@ -34,5 +34,5 @@ module.exports = {
             }
         ]
     },
-    plugins:[htmlPlugin]
+    plugins: [htmlPlugin]
 };
