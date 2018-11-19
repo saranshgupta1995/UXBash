@@ -5,12 +5,12 @@ const cors = require('cors');
 
 const app = express();
 
-app.use(express.static('./dist'));
+app.use(express.static(path.join(__dirname, '/dist')));
 
 console.log(__dirname,'here')
 
 app.get('/', (req, res) => {
-    res.sendFile('./dist/index.html');
+    res.sendFile(path.join('/dist/index.html'));
 });
 
 const port = process.env.PORT || 3000;
