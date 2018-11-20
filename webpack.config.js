@@ -1,5 +1,6 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const htmlPlugin = new HtmlWebPackPlugin({
     template: "./src/index.html",
@@ -9,8 +10,19 @@ const htmlPlugin = new HtmlWebPackPlugin({
 const copyWebpackPlugin = new CopyWebpackPlugin([
     {
         from: "./manifest.json"
+    },
+    {
+        from: "./manifest-icons",
+        to: "./manifest-icons"
     }
-])
+]);
+
+const cleanWebpackPlugin = new CleanWebpackPlugin(['dist'], {
+    verbose: true,
+    dry: false,
+    exclude: []
+});
+
 
 const CSSModuleLoader = {
     loader: 'css-loader',
@@ -49,8 +61,15 @@ module.exports = {
                     CSSModuleLoader,
                     "sass-loader"
                 ]
+            },
+            {
+                test: /\.(svg|gif|png)$/,
+                loader: 'file-loader',
+                options: {
+                    name: "[path][name].[ext]?[hash]"
+                }
             }
         ]
     },
-    plugins: [htmlPlugin, copyWebpackPlugin]
+    plugins: [cleanWebpackPlugin, htmlPlugin, copyWebpackPlugin]
 };
