@@ -1,9 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Layout from './containers/Layout';
+import './index.css';
+import Layout from './containers/Layout/Layout';
+
 
 const Index = () => {
-    return <div>Hello React!!
+    return <div>
+        <p>
+            Hello React!!
+        </p>
         <Layout></Layout>
     </div>;
 };
