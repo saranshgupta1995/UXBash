@@ -1,6 +1,6 @@
 {
-    "name": "Instagram of PWA",
-    "short_name": "PWAGram",
+    "name": "UXBash",
+    "short_name": "UXBash",
     "icons": [
         {
             "src": "/src/images/icons/app-icon-48x48.png",
@@ -14,7 +14,7 @@
     "orientation": "portrait-primary",
     "background_color": "#fff",
     "theme_color": "#3f51b5",
-    "description": "A simple insta clone",
+    "description": "Get your UX criticised and hated",
     "dir": "ltr",
     "lang": "en-US"
 }
