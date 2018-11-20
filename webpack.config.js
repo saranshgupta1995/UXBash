@@ -1,9 +1,16 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const htmlPlugin = new HtmlWebPackPlugin({
     template: "./src/index.html",
     filename: "./index.html"
 });
+
+const copyWebpackPlugin = new CopyWebpackPlugin([
+    {
+        from: "./manifest.json"
+    }
+])
 
 const CSSModuleLoader = {
     loader: 'css-loader',
@@ -25,6 +32,10 @@ module.exports = {
                 }
             },
             {
+                test: /\.json?$/,
+                loader: 'json-loader'
+            },
+            {
                 test: /\.css$/,
                 use: [
                     "style-loader",
@@ -41,5 +52,5 @@ module.exports = {
             }
         ]
     },
-    plugins: [htmlPlugin]
+    plugins: [htmlPlugin, copyWebpackPlugin]
 };
