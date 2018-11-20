@@ -2,15 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import './index.css';
 import Layout from './containers/Layout/Layout';
-
+import store from './store';
+import { Provider } from "react-redux";
 
 const Index = () => {
-    return <div>
-        <p>
-            Hello React!!
-        </p>
-        <Layout></Layout>
-    </div>;
+    return <Provider store={store}>
+            <Layout></Layout>
+        </Provider>;
 };
 
 ReactDOM.render(<Index />, document.getElementById("index"));
