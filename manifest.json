@@ -3,7 +3,7 @@
     "short_name": "UXBash",
     "icons": [
         {
-            "src": "/manifest-icons/app-icon-48x48.png",
+            "src": "./manifest-icons/app-icon-48x48.png",
             "type": "image/png",
             "sizes": "48x48"
         }
