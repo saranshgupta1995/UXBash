@@ -6,6 +6,26 @@
             "src": "./manifest-icons/app-icon-48x48.png",
             "type": "image/png",
             "sizes": "48x48"
+        },
+        {
+            "src": "./manifest-icons/app-icon-48x48.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "./manifest-icons/app-icon-48x48.png",
+            "type": "image/png",
+            "sizes": "128x128"
+        },
+        {
+            "src": "./manifest-icons/app-icon-48x48.png",
+            "type": "image/png",
+            "sizes": "256x256"
+        },
+        {
+            "src": "./manifest-icons/app-icon-48x48.png",
+            "type": "image/png",
+            "sizes": "512x512"
         }
     ],
     "start_url": "./index.html",
