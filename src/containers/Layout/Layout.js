@@ -4,6 +4,8 @@ import Header from '../../components/Header/Header';
 
 import { connect } from "react-redux";
 import { openAC } from '../../store/actions';
+import Footer from '../../components/Footer/Footer';
+import BackgroundCanvas from '../../components/BackgroundCanves/BackgroundCanvas';
 
 const mapStateToProps = state => {
     return { account: state.account };
@@ -20,8 +22,9 @@ const mapDispatchToProps = dispatch => {
 const Layout = ({onOutSideClick}) => {
     return (
         <React.Fragment>
-            <p onClick={onOutSideClick} className={Styles.pika}>pika</p>
+            <BackgroundCanvas></BackgroundCanvas>
             <Header></Header>
+            <Footer></Footer>
         </React.Fragment>
     )
 };
