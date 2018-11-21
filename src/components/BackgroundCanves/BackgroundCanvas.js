@@ -5,13 +5,13 @@ class BackgroundCanvas extends Component {
 
     componentDidMount() {
 
-        var mx, my,
+        var mx, my, p, n,
             THICKNESS = Math.pow(80, 2),
             THICKNESS_COPY = THICKNESS,
-            SPACING = 5,
+            SPACING = 6,
             MARGIN = 0,
-            ROWS = ~~window.innerHeight/SPACING,
-            COLS = ~~window.innerWidth/SPACING,
+            ROWS = ~~window.innerHeight / SPACING,
+            COLS = ~~window.innerWidth / SPACING,
             COLOR = 220,
             DRAG = 0.95,
             NUM_PARTICLES = ROWS * COLS,
@@ -35,15 +35,15 @@ class BackgroundCanvas extends Component {
             var bounds = canvas.getBoundingClientRect();
             mx = e.clientX - bounds.left;
             my = e.clientY - bounds.top;
-            if(THICKNESS===THICKNESS_COPY){
-                THICKNESS-=0.9*THICKNESS;
-                var additive=0.2*THICKNESS;
-                var thicknessController=setInterval(()=>{
-                    THICKNESS+=additive;
-                    if(THICKNESS===THICKNESS_COPY){
+            if (THICKNESS === THICKNESS_COPY) {
+                THICKNESS -= 0.9 * THICKNESS;
+                var additive = 0.2 * THICKNESS;
+                var thicknessController = setInterval(() => {
+                    THICKNESS += additive;
+                    if (THICKNESS === THICKNESS_COPY) {
                         clearInterval(thicknessController);
-                    }    
-                },16)
+                    }
+                }, 16)
             }
         });
 
@@ -63,7 +63,7 @@ class BackgroundCanvas extends Component {
 
         function makeImgBlack() {
             for (let i = 0; i < b.length; i += 4) {
-                b[i + 0] = 0;
+                b[i] = 0;
                 b[i + 1] = 0;
                 b[i + 2] = 0;
                 b[i + 3] = 255;
@@ -77,24 +77,26 @@ class BackgroundCanvas extends Component {
             particles[i] = p;
         }
 
-        function makeParticlesWhite() {
-            for (let i = 0; i < NUM_PARTICLES; i += 1) {
-                let p = particles[i];
-                let n = (~~p.x + (~~p.y * canvas.width)) * 4;
-                b[n + 0] = 255;
-                b[n + 1] = 255;
-                b[n + 2] = 255;
-            }
+        function giveParticleColor(p, color=255) {
+            n = (~~p.x + (~~p.y * w)) * 4;
+            b[n + 0] = color;
+            b[n + 1] = color;
+            b[n + 2] = color;
         }
-
 
         var d, dx, dy, f, t;
 
+        let sin = Math.sin.bind(Math);
+        let cos = Math.cos.bind(Math);
+        let atan2 = Math.atan2.bind(Math);
+
+        makeImgBlack();
         function step() {
 
             for (let i = 0; i < NUM_PARTICLES; i++) {
 
                 p = particles[i];
+                giveParticleColor(p,0);
 
                 dx = mx - p.x;
                 dy = my - p.y;
@@ -104,17 +106,16 @@ class BackgroundCanvas extends Component {
                 f = -THICKNESS / d;
 
                 if (d < THICKNESS) {
-                    t = Math.atan2(dy, dx);
-                    p.vx += f * Math.cos(t);
-                    p.vy += f * Math.sin(t);
+                    t = atan2(dy, dx);
+                    p.vx += f * cos(t);
+                    p.vy += f * sin(t);
                 }
                 p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
                 p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
 
+                giveParticleColor(p);
             }
 
-            makeImgBlack();
-            makeParticlesWhite();
             ctx.putImageData(a, 0, 0);
             requestAnimationFrame(step);
         }
