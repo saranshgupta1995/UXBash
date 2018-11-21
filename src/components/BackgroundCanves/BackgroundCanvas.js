@@ -14,6 +14,7 @@ class BackgroundCanvas extends Component {
             COLS = ~~window.innerWidth / SPACING,
             COLOR = 220,
             DRAG = 0.95,
+            BG_BLACK=31,
             NUM_PARTICLES = ROWS * COLS,
             EASE = 0.35;
 
@@ -63,9 +64,9 @@ class BackgroundCanvas extends Component {
 
         function makeImgBlack() {
             for (let i = 0; i < b.length; i += 4) {
-                b[i] = 0;
-                b[i + 1] = 0;
-                b[i + 2] = 0;
+                b[i] = BG_BLACK;
+                b[i + 1] = BG_BLACK;
+                b[i + 2] = BG_BLACK;
                 b[i + 3] = 255;
             }
         }
@@ -113,12 +114,12 @@ class BackgroundCanvas extends Component {
                     t = atan2(dy, dx);
                     p.vx += f * cos(t);
                     p.vy += f * sin(t);
-                    giveParticleColor(p, 0);
+                    giveParticleColor(p, BG_BLACK);
                     p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
                     p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
                     giveParticleColor(p);
                 } else if (p.ox - p.x) {
-                    giveParticleColor(p, 0);
+                    giveParticleColor(p, BG_BLACK);
                     p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
                     p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
                     giveParticleColor(p);

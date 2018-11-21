@@ -1,7 +1,10 @@
+@import './../../base';
+
 .Header{
 width: 100%;
-height: 64px;
+height: 84px;
 position: absolute;
 top: 0;
 left: 0px;
+background-color: rgba($color: $BG_BLACK, $alpha: 1.0)
 }
