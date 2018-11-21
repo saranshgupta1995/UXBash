@@ -4,173 +4,123 @@ import React, { Component } from 'react';
 class BackgroundCanvas extends Component {
 
     componentDidMount() {
-        let randFun = Math.random;
-        let currentMousePosition = {
-            x: -1,
-            y: -1
-        }
-        let p;
-        window['requestAnimFrame'] = (function () {
-            return window.requestAnimationFrame ||
-                window.webkitRequestAnimationFrame ||
-                window['mozRequestAnimationFrame'] ||
-                window['oRequestAnimationFrame'] ||
-                window['msRequestAnimationFrame'] ||
-                function (callback) {
-                    window.setTimeout(callback, 1000 / 60);
-                };
-        })();
+
+        var mx, my,
+            THICKNESS = Math.pow(80, 2),
+            THICKNESS_COPY = THICKNESS,
+            SPACING = 5,
+            MARGIN = 0,
+            ROWS = ~~window.innerHeight/SPACING,
+            COLS = ~~window.innerWidth/SPACING,
+            COLOR = 220,
+            DRAG = 0.95,
+            NUM_PARTICLES = ROWS * COLS,
+            EASE = 0.25;
 
         var canvas = document.getElementById("canvas");
+        canvas.width = MARGIN + COLS * SPACING
+        canvas.height = MARGIN + ROWS * SPACING
         var ctx = canvas['getContext']("2d");
+        var [w, h] = [canvas.width, canvas.height];
+        var a = ctx.createImageData(w, h);
+        var b = a.data;
 
-        var W = window.innerWidth, H = window.innerHeight;
-        canvas['width'] = W;
-        canvas['height'] = H;
-        canvas['mousePosition'] = {
-            x: 0,
-            y: 0
-        };
+        canvas.addEventListener('mousemove', function (e) {
+            var bounds = canvas.getBoundingClientRect();
+            mx = e.clientX - bounds.left;
+            my = e.clientY - bounds.top;
+        });
 
-        var particleCount = 50,
-            particles = [],
-            minDist = 300
+        canvas.addEventListener('click', function (e) {
+            var bounds = canvas.getBoundingClientRect();
+            mx = e.clientX - bounds.left;
+            my = e.clientY - bounds.top;
+            if(THICKNESS===THICKNESS_COPY){
+                THICKNESS-=0.9*THICKNESS;
+                var additive=0.2*THICKNESS;
+                var thicknessController=setInterval(()=>{
+                    THICKNESS+=additive;
+                    if(THICKNESS===THICKNESS_COPY){
+                        clearInterval(thicknessController);
+                    }    
+                },16)
+            }
+        });
 
-        function paintCanvas() {
-            ctx.fillStyle = "rgba(0,0,0,1)";
-            ctx.fillRect(0, 0, W, H);
-        }
-
-        function getrelativeMousePos(canvas, evt) {
-            var rect = canvas.getBoundingClientRect();
-            currentMousePosition.x = evt.clientX - rect.left
-            currentMousePosition.y = evt.clientY - rect.top
-            return {
-                x: ((evt.clientX - rect.width / 2) / rect.width) / 1.5,
-                y: ((evt.clientY - rect.height / 2) / rect.height) / 1.5
-            };
-        }
-
-        canvas.addEventListener('mousemove', function (evt) {
-            getrelativeMousePos(canvas, evt);
-        }, false);
 
         class Particle {
-            x = randFun() * W;
-            y = randFun() * H;
-            lifeTime = 0;
-            radius = 1;
 
-            constructor() {
-                let that = this;
-                setInterval(() => {
-                    that.x = randFun() * W;
-                    that.y = randFun() * H;
-                }, 5000 + randFun() * 100000)
+            x = 0;
+            ox = 0;
+            y = 0;
+            oy = 0;
+            vx = 0;
+            vy = 0;
+
+        }
+
+        var particles = [];
+
+        function makeImgBlack() {
+            for (let i = 0; i < b.length; i += 4) {
+                b[i + 0] = 0;
+                b[i + 1] = 0;
+                b[i + 2] = 0;
+                b[i + 3] = 255;
             }
-
-            draw = function () {
-                ctx.fillStyle = "rgba(255, 255, 200, 1" + ")";
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-
-                ctx.fill();
-            };
-
-            updateSpeed = function () {
-                if (!~currentMousePosition.x)
-                    return
-                let diffX = this.x - currentMousePosition.x
-                let diffY = this.y - currentMousePosition.y
-
-                if (diffX * diffX + diffY * diffY < 144) {
-                    this.x -= diffX / 200;
-                    this.y -= diffY / 200;
-                } else if (diffX * diffX + diffY * diffY < 6600) {
-                    this.x -= diffX / 40;
-                    this.y -= diffY / 40;
-                } else {
-                    this.x -= (diffX * diffX >= 1600 ? ((diffX) / 1000) : 0) + randFun() * 1 + randFun() * -1;
-                    this.y -= (diffY * diffY >= 1600 ? ((diffY) / 1000) : 0) + randFun() * 1 + randFun() * -1;
-                }
-            };
-
-
         }
 
-        for (var i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            var p = new Particle();
+            p.ox = p.x = MARGIN + (SPACING * ((i % COLS)));
+            p.oy = p.y = MARGIN + (SPACING * ((i / COLS)));
+            particles[i] = p;
         }
 
-        function draw() {
-
-            paintCanvas();
-
-            let p;
-            for (var i = 0; i < particles.length; i++) {
-                p = particles[i];
-                p.draw();
+        function makeParticlesWhite() {
+            for (let i = 0; i < NUM_PARTICLES; i += 1) {
+                let p = particles[i];
+                let n = (~~p.x + (~~p.y * canvas.width)) * 4;
+                b[n + 0] = 255;
+                b[n + 1] = 255;
+                b[n + 2] = 255;
             }
-
-            update();
         }
 
-        function update() {
 
-            for (var i = 0; i < particles.length; i++) {
+        var d, dx, dy, f, t;
+
+        function step() {
+
+            for (let i = 0; i < NUM_PARTICLES; i++) {
+
                 p = particles[i];
 
-                if (p.x + p.radius > W)
-                    p.x = p.radius;
+                dx = mx - p.x;
+                dy = my - p.y;
 
-                else if (p.x - p.radius < 0) {
-                    p.x = W - p.radius;
+                d = dx * dx + dy * dy;
+
+                f = -THICKNESS / d;
+
+                if (d < THICKNESS) {
+                    t = Math.atan2(dy, dx);
+                    p.vx += f * Math.cos(t);
+                    p.vy += f * Math.sin(t);
                 }
-
-                if (p.y + p.radius > H)
-                    p.y = p.radius;
-
-                else if (p.y - p.radius < 0) {
-                    p.y = H - p.radius;
-                }
-
-                let p2;
-                let k = 0;
-                for (var j = i + 1; j < particles.length; j++) {
-                    k += distance(p, particles[j]) ? 1 : 0;
-                    if (k > 5)
-                        break
-                }
-                p.updateSpeed();
+                p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
+                p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
 
             }
+
+            makeImgBlack();
+            makeParticlesWhite();
+            ctx.putImageData(a, 0, 0);
+            requestAnimationFrame(step);
         }
 
-        function distance(p1, p2) {
-            let dist, colorIndex;
-            let dx = p1.x - p2.x;
-            let dy = p1.y - p2.y;
+        step();
 
-            dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist <= minDist) {
-                ctx.beginPath();
-                colorIndex = parseInt((100.0 * dist / minDist).toString()) + 25;
-                ctx.strokeStyle = "rgba(255,255,255 ," + (0.65 - 1* (dist / minDist)) + ")";
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.stroke();
-            }
-
-            return dist <= minDist
-        }
-
-        function animloop() {
-            draw();
-            window['requestAnimFrame'](animloop);
-        }
-
-        animloop();
 
     }
 
