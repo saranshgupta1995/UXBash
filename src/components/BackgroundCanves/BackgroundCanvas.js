@@ -15,7 +15,7 @@ class BackgroundCanvas extends Component {
             COLOR = 220,
             DRAG = 0.95,
             NUM_PARTICLES = ROWS * COLS,
-            EASE = 0.25;
+            EASE = 0.35;
 
         var canvas = document.getElementById("canvas");
         canvas.width = MARGIN + COLS * SPACING
@@ -77,7 +77,7 @@ class BackgroundCanvas extends Component {
             particles[i] = p;
         }
 
-        function giveParticleColor(p, color=255) {
+        function giveParticleColor(p, color = 255) {
             n = (~~p.x + (~~p.y * w)) * 4;
             b[n + 0] = color;
             b[n + 1] = color;
@@ -91,29 +91,40 @@ class BackgroundCanvas extends Component {
         let atan2 = Math.atan2.bind(Math);
 
         makeImgBlack();
+
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            giveParticleColor(particles[i])
+        }
+
         function step() {
 
             for (let i = 0; i < NUM_PARTICLES; i++) {
 
                 p = particles[i];
-                giveParticleColor(p,0);
 
                 dx = mx - p.x;
                 dy = my - p.y;
 
                 d = dx * dx + dy * dy;
 
-                f = -THICKNESS / d;
-
                 if (d < THICKNESS) {
+
+                    f = -THICKNESS / d;
                     t = atan2(dy, dx);
                     p.vx += f * cos(t);
                     p.vy += f * sin(t);
+                    giveParticleColor(p, 0);
+                    p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
+                    p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
+                    giveParticleColor(p);
+                } else if (p.ox - p.x) {
+                    giveParticleColor(p, 0);
+                    p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
+                    p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
+                    giveParticleColor(p);
                 }
-                p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
-                p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
 
-                giveParticleColor(p);
+
             }
 
             ctx.putImageData(a, 0, 0);
