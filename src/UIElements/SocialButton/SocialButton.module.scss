@@ -2,6 +2,7 @@
 
 $SOCIAL_BUTTON_SIZE:100px;
 $SOCIAL_BUTTON_BG:#cacaca;
+
 .SocialButton {
     height: $SOCIAL_BUTTON_SIZE;
     width: $SOCIAL_BUTTON_SIZE;
@@ -11,8 +12,12 @@ $SOCIAL_BUTTON_BG:#cacaca;
     cursor: pointer;
     text-align: center;
     line-height: $SOCIAL_BUTTON_SIZE;
+    float: right;
+    margin-right: 45px;
+    transition-duration: 0.2s;
+    border: 2px solid seashell;
 
-    div{
+    div {
         position: absolute;
         z-index: -1;
         content: '';
@@ -27,4 +32,16 @@ $SOCIAL_BUTTON_BG:#cacaca;
 
 .SocialButton:hover div {
     background-color: $SOCIAL_BUTTON_BG
+}
+
+.SocialButton::before {
+    content: '';
+    height: $SOCIAL_BUTTON_SIZE;
+    width: $SOCIAL_BUTTON_SIZE;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    z-index: -1;
+    top:2px;
+    background-color: darken($color: $SOCIAL_BUTTON_BG, $amount: 10%)
 }
