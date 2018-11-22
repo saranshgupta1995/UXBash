@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Styles from './SocialButton.module.scss';
-import { playAround } from '../../store/actions/SocialButton';
+import { playAround, actSerious } from '../../store/actions/SocialButton';
 import { connect } from 'react-redux';
 
 class SocialButton extends Component {
@@ -32,7 +32,7 @@ class SocialButton extends Component {
         setTimeout(() => {
             target.style.border = '2px solid seashell'
         }, 60);
-        this.props.playAround();
+        (this.props.gameIndex?this.props.actSerious:this.props.playAround)();
     }
 
 
@@ -41,7 +41,7 @@ class SocialButton extends Component {
             <div className="buddies"></div>
             <div className="buddies"></div>
             <div className="buddies"></div>
-            <span>Play Around</span>
+            <span>{!this.props.gameIndex ? 'Play Around' : 'Act Serious'}</span>
         </div>
     }
 
@@ -51,13 +51,16 @@ const matchDispatchToProps = dispatch => {
     return {
         playAround: () => {
             dispatch(playAround({ gameIndex: 1 }));
+        },
+        actSerious:()=>{
+            dispatch(actSerious());
         }
     }
 }
 
 const matchStateToProps = state => {
     return {
-        gameIndex:state.SocialButton.gameIndex
+        gameIndex: state.SocialButton.gameIndex
     }
 }
 

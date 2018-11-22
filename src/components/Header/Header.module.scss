@@ -9,6 +9,7 @@
     left: 0px;
     background: linear-gradient(to bottom, rgba($color: $BG_BLACK, $alpha: 0.9), rgba($color: $BG_BLACK, $alpha: 0.9) 60%, rgba($color: $BG_BLACK, $alpha: 0));
     color: $FNT_BASIC;
+    transition-duration: 500ms;
 
     *{
         padding: 0;
@@ -18,15 +19,13 @@
     .Menu{
         list-style: none;
         float: right;
-        margin: 0px;
-    
+        margin: 0px;    
+
         li{
             line-height: $HEADER_HEIGHT;
             padding-right: 20px;
             font-size: 16px;
             cursor: pointer;
-
-            
         }
         
         li:hover{
@@ -35,5 +34,9 @@
         }
 
     }
+    
+}
 
+.Header.OffScreen{
+    top:-$HEADER_HEIGHT
 }
