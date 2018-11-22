@@ -1,0 +1,30 @@
+@import './../../base';
+
+$SOCIAL_BUTTON_SIZE:100px;
+$SOCIAL_BUTTON_BG:#cacaca;
+.SocialButton {
+    height: $SOCIAL_BUTTON_SIZE;
+    width: $SOCIAL_BUTTON_SIZE;
+    position: relative;
+    border-radius: 50%;
+    background-color: $SOCIAL_BUTTON_BG;
+    cursor: pointer;
+    text-align: center;
+    line-height: $SOCIAL_BUTTON_SIZE;
+
+    div{
+        position: absolute;
+        z-index: -1;
+        content: '';
+        height: $SOCIAL_BUTTON_SIZE;
+        width: $SOCIAL_BUTTON_SIZE;
+        border-radius: 50%;
+        top: 0;
+        left: 0;
+        transition-duration: 0.3s;
+    }
+}
+
+.SocialButton:hover div {
+    background-color: $SOCIAL_BUTTON_BG
+}

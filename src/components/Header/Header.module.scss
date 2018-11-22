@@ -4,6 +4,7 @@
     width: 100%;
     height: $HEADER_HEIGHT;
     position: absolute;
+    z-index: 1;
     top: 0;
     left: 0px;
     // background-color: rgba($color: $BG_BLACK, $alpha: 1.0);

@@ -1,0 +1,9 @@
+@import './../../base';
+.Content {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    padding-top: $HEADER_HEIGHT;
+}

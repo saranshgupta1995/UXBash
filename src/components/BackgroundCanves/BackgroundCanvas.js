@@ -26,7 +26,7 @@ class BackgroundCanvas extends Component {
         var a = ctx.createImageData(w, h);
         var b = a.data;
 
-        canvas.addEventListener('mousemove', function (e) {
+        document.addEventListener('mousemove', function (e) {
             var bounds = canvas.getBoundingClientRect();
             mx = e.clientX - bounds.left;
             my = e.clientY - bounds.top;

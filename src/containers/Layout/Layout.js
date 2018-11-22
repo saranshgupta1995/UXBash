@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { openAC } from '../../store/actions';
 import Footer from '../../components/Footer/Footer';
 import BackgroundCanvas from '../../components/BackgroundCanves/BackgroundCanvas';
+import Content from '../Content/Content';
 
 const mapStateToProps = state => {
     return { account: state.account };
@@ -24,6 +25,7 @@ const Layout = ({onOutSideClick}) => {
         <React.Fragment>
             <BackgroundCanvas></BackgroundCanvas>
             <Header></Header>
+            <Content></Content>
             <Footer></Footer>
         </React.Fragment>
     )
