@@ -42,6 +42,7 @@ $SOCIAL_BUTTON_BG:#cacaca;
     cursor: pointer;
     position: absolute;
     z-index: -1;
-    top:2px;
+    top:5px;
+    left: 5px;
     background-color: darken($color: $SOCIAL_BUTTON_BG, $amount: 10%)
 }

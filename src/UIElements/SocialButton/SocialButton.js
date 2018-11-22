@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Styles from './SocialButton.module.scss';
+import { playAround } from '../../store/actions/SocialButton';
+import { connect } from 'react-redux';
 
-const SocialButton = (props) => {
+class SocialButton extends Component {
 
-    function randomizeOpacity() {
+    randomizeOpacity = () => {
         const buddies = document.getElementsByClassName('buddies')
         const limit = 40;
 
@@ -14,7 +16,7 @@ const SocialButton = (props) => {
         };
     }
 
-    function resetOpacity() {
+    resetOpacity = () => {
         const buddies = document.getElementsByClassName('buddies')
 
         for (let i = 0; i < buddies.length; i++) {
@@ -24,25 +26,39 @@ const SocialButton = (props) => {
         };
     }
 
-    function initEvent() {
+    initEvent = () => {
         const target = document.getElementsByClassName(Styles.SocialButton)[0];
         target.style.border = 'none';
         setTimeout(() => {
             target.style.border = '2px solid seashell'
-        }, 300);
+        }, 60);
+        this.props.playAround();
     }
 
-    return (
 
-        <div onClick={initEvent} onMouseLeave={resetOpacity} onMouseEnter={randomizeOpacity} className={Styles.SocialButton}>
+    render() {
+        return <div onClick={this.initEvent} onMouseLeave={this.resetOpacity} onMouseEnter={this.randomizeOpacity} className={Styles.SocialButton}>
             <div className="buddies"></div>
             <div className="buddies"></div>
             <div className="buddies"></div>
-            <span>Play around</span>
+            <span>Play Around</span>
         </div>
+    }
 
-    )
 }
 
+const matchDispatchToProps = dispatch => {
+    return {
+        playAround: () => {
+            dispatch(playAround({ gameIndex: 1 }));
+        }
+    }
+}
 
-export default SocialButton;
+const matchStateToProps = state => {
+    return {
+        gameIndex:state.SocialButton.gameIndex
+    }
+}
+
+export default connect(matchStateToProps, matchDispatchToProps)(SocialButton);
