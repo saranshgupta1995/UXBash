@@ -9,7 +9,8 @@
     left: 0px;
     background: linear-gradient(to bottom, rgba($color: $BG_BLACK, $alpha: 0.9), rgba($color: $BG_BLACK, $alpha: 0.9) 60%, rgba($color: $BG_BLACK, $alpha: 0));
     color: $FNT_BASIC;
-    transition-duration: 500ms;
+    transition-timing-function: ease-in-out;
+    transition-duration: 250ms;
 
     *{
         padding: 0;
