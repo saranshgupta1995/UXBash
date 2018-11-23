@@ -1,22 +1,26 @@
-
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class BackgroundCanvas extends Component {
 
-    componentDidMount() {
+    initCanvas = () => {
+
+        if (window.canvasRequestIdPika) {
+            cancelAnimationFrame(window.canvasRequestIdPika);
+            window.canvasRequestIdPika = undefined;
+        }
 
         var mx, my, p, n,
-            THICKNESS = Math.pow(80, 2),
+            THICKNESS = Math.pow(this.props.thickness, 2),
             THICKNESS_COPY = THICKNESS,
-            SPACING = 6,
+            SPACING = this.props.spacing,
             MARGIN = 0,
             ROWS = ~~window.innerHeight / SPACING,
             COLS = ~~window.innerWidth / SPACING,
-            COLOR = 220,
-            DRAG = 0.95,
-            BG_BLACK=31,
+            DRAG = this.props.drag*0.01,
+            BG_BLACK = 31,
             NUM_PARTICLES = ROWS * COLS,
-            EASE = 0.35;
+            EASE = this.props.ease*0.01;
 
         var canvas = document.getElementById("canvas");
         canvas.width = MARGIN + COLS * SPACING
@@ -129,7 +133,7 @@ class BackgroundCanvas extends Component {
             }
 
             ctx.putImageData(a, 0, 0);
-            requestAnimationFrame(step);
+            window.canvasRequestIdPika = requestAnimationFrame(step);
         }
 
         step();
@@ -137,10 +141,31 @@ class BackgroundCanvas extends Component {
 
     }
 
+
+
+    componentDidUpdate() {
+        this.initCanvas();
+    }
+
+    componentDidMount() {
+        this.initCanvas();
+    }
+
+
+
     render() {
         return <canvas id="canvas"></canvas>
     }
 
 }
 
-export default BackgroundCanvas;
+const mapStateToProps = (state) => {
+    return {
+        spacing: state.BackgroundCanvas.spacing,
+        thickness: state.BackgroundCanvas.thickness,
+        drag: state.BackgroundCanvas.drag,
+        ease: state.BackgroundCanvas.ease,
+    }
+};
+
+export default connect(mapStateToProps)(BackgroundCanvas);

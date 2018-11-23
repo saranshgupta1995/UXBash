@@ -1,0 +1,17 @@
+@import './../../base';
+
+.Menu {
+    list-style: none;
+    float: right;
+    margin: 0px;
+    li {
+        line-height: $HEADER_HEIGHT;
+        padding-right: 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    li:hover {
+        color: aliceblue;
+        transition-duration: $TRANSITION_DUR_SM;
+    }
+}
