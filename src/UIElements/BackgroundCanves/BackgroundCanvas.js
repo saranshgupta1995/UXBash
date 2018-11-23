@@ -36,23 +36,6 @@ class BackgroundCanvas extends Component {
             my = e.clientY - bounds.top;
         });
 
-        canvas.addEventListener('click', function (e) {
-            var bounds = canvas.getBoundingClientRect();
-            mx = e.clientX - bounds.left;
-            my = e.clientY - bounds.top;
-            if (THICKNESS === THICKNESS_COPY) {
-                THICKNESS -= 0.9 * THICKNESS;
-                var additive = 0.2 * THICKNESS;
-                var thicknessController = setInterval(() => {
-                    THICKNESS += additive;
-                    if (THICKNESS === THICKNESS_COPY) {
-                        clearInterval(thicknessController);
-                    }
-                }, 16)
-            }
-        });
-
-
         class Particle {
 
             x = 0;

@@ -51,12 +51,6 @@ class GameController extends Component {
                 gameData.map((inp, i) => {
                     return <li key={i}><input {...inp} /></li>
                 })
-                /* <li>
-                <input {...gameData[0]} />
-            </li>
-            <li><input {...gameData[1]} /></li>
-            <li><input type="text" /></li>
-            <li><input type="text" /></li> */
             }
         </ul>
 
